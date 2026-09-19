@@ -1,0 +1,47 @@
+name: Keyless Infrastructure & Deployment Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  id-token: write   # Required to request the OIDC JWT token from GitHub
+  contents: read    # Required to check out your repository code
+
+jobs:
+  provision-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to AWS via OIDC (Keyless)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::709847020687:role/github_action
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Run Terraform to Provision Infrastructure
+        run: |
+          cd terraform
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Extract Instance ID & Deploy via AWS SSM
+        run: |
+          cd terraform
+          INSTANCE_ID=$(terraform output -raw ec2_instance_id)
+          echo "Targeting EC2 Instance ID: $INSTANCE_ID"
+
+          # Send shell commands safely to EC2 via AWS Systems Manager (No SSH/Port 22 needed!)
+          aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --targets "Key=instanceids,Values=$INSTANCE_ID" \
+            --parameters 'commands=[
+              "echo \"Connected successfully via AWS SSM!\""
+            ]' \
+            --comment "Automated keyless deployment test" \
+            --timeout-seconds 600
