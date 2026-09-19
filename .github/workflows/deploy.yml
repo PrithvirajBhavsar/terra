@@ -45,4 +45,3 @@ jobs:
             ]' \
             --comment "Automated keyless deployment test" \
             --timeout-seconds 600
-            
