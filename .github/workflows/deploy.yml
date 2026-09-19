@@ -18,7 +18,7 @@ jobs:
       - name: Authenticate to AWS via OIDC (Keyless)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::709847020687:role/github_terra
+          role-to-assume: arn:aws:iam::709847020687:role/github_action
           aws-region: ap-south-1
           audience: sts.amazonaws.com
 
