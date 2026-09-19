@@ -21,6 +21,7 @@ jobs:
           role-to-assume: arn:aws:iam::709847020687:role/github_action
           aws-region: ap-south-1
           audience: sts.amazonaws.com
+          role-skip-session-tagging: true
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
