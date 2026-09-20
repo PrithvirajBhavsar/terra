@@ -38,12 +38,13 @@ jobs:
           INSTANCE_ID=$(terraform output -raw ec2_instance_id)
           echo "Targeting EC2 Instance ID: $INSTANCE_ID"
 
-          # Send shell commands safely to EC2 via AWS Systems Manager (No SSH/Port 22 needed!)
+          # Send shell commands safely to EC2 via AWS Systems Manager using --instance-ids
           aws ssm send-command \
+            --region ap-south-1 \
             --document-name "AWS-RunShellScript" \
-            --targets "Key=instanceids,Values=$INSTANCE_ID" \
+            --instance-ids "$INSTANCE_ID" \
             --parameters 'commands=[
               "echo \"Connected successfully via AWS SSM!\""
             ]' \
             --comment "Automated keyless deployment test" \
-            --timeout-seconds 600  
+            --timeout-seconds 600
