@@ -11,7 +11,7 @@ data "aws_ami" "amazon_linux_2" {
 
 # 2. Create a Security Group (No inbound SSH port 22 required)
 resource "aws_security_group" "instance_sg" {
-  name        = "terraform-ec2-ssm-sg-"
+  name_prefix        = "terraform-ec2-ssm-sg-"
   description = "Security group for EC2 instance with SSM access"
 
   # Allow all outbound traffic so instance can reach AWS SSM endpoints

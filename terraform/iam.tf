@@ -1,6 +1,6 @@
 # 1. Create IAM Role for Systems Manager (SSM)
 resource "aws_iam_role" "ssm_role" {
-  name = "ec2_ssm_execution_role-"
+  name_prefix = "ec2_ssm_execution_role-"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -24,6 +24,6 @@ resource "aws_iam_role_policy_attachment" "ssm_server_policy" {
 
 # 3. Create IAM Instance Profile
 resource "aws_iam_instance_profile" "ssm_profile" {
-  name = "ec2_ssm_instance_profile"
+  name_prefix = "ec2_ssm_instance_profile-"
   role = aws_iam_role.ssm_role.name
 }
