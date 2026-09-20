@@ -18,7 +18,7 @@ jobs:
       - name: Authenticate to AWS via OIDC (Keyless)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::709847020687:role/github_action
+          role-to-assume: arn:aws:iam::709847020687:role/access_terra
           aws-region: ap-south-1
           audience: sts.amazonaws.com
           role-skip-session-tagging: true
@@ -47,4 +47,3 @@ jobs:
             ]' \
             --comment "Automated keyless deployment test" \
             --timeout-seconds 600  
-            
