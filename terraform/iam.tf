@@ -1,6 +1,6 @@
 # 1. Create IAM Role for Systems Manager (SSM)
 resource "aws_iam_role" "ssm_role" {
-  name = "ec2_ssm_execution_role"
+  name = "ec2_ssm_execution_role-"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
