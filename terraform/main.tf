@@ -38,3 +38,8 @@ resource "aws_instance" "app_server" {
     Name = "Terraform-SSM-Instance"
   }
 }
+
+output "ec2_instance_id" {
+  description = "The ID of the provisioned EC2 instance"
+  value       = aws_instance.app_server.id
+}
